@@ -17,7 +17,7 @@ class Test_abc:
     '''
 
     @allure.step(title='第一个测试')
-    @allure.testcase('https:www.baidu.com')
+    @allure.testcase('https:www.baidu.com/ll')
 
     @allure.severity(allure.severity_level.BLOCKER)
     # @pytest.allure.severity(pytest.allure.severity_level.BLOCKER)
