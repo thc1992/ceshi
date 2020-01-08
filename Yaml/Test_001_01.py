@@ -17,13 +17,18 @@ class Test_abc:
     '''
 
     @allure.step(title='第一个测试')
-    @allure.testcase('https:www.baidu.com/ll')
-
     @allure.severity(allure.severity_level.BLOCKER)
     # @pytest.allure.severity(pytest.allure.severity_level.BLOCKER)
     def test_01(self):
         allure.attach('这是一个描述', '测试下')
         assert 1
+
+    @allure.issue("http://www.baidu.com")
+    @allure.testcase("http://www.baidu.com/test_01")
+    @allure.severity(allure.severity_level.TRIVIAL)
+    def test_02(self):
+        allure.attach('这是一个描述', '测试下')
+        assert 0
 
 
 if __name__ == '__main__':
