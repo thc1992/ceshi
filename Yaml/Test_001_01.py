@@ -1,35 +1,41 @@
 import pytest, allure
+import os
 
 
-class Test_abc:
-    '''
-    step：加标题
-    attach:加文本，和文本内容
-    使用方式：添加测试级别
-        @allure.severity(allure.severity_level.CRITICAL）
+@allure.feature('测试用例功能')  # feature定义功能
+class Test_Class(object):
 
-      Severity：严重级别(BLOCKER,CRITICAL,NORMAL,MINOR,TRIVIAL)
-      @allure.testcase() 跳转到问题路径
-      @allure.issue("") 跳转到bug地址
+    @pytest.fixture(scope='function')
+    def setup_function(request):
+        def teardown_function():
+            print("teardown_function called.")
 
-      allure generate report / -o report/html  将json执行成html文件
+        request.addfinalizer(teardown_function)  # 此内嵌函数做teardown工作
+        print('setup_function called.')
 
-    '''
+    @pytest.fixture(scope='module')
+    def setup_module(request):
+        def teardown_module():
+            print("teardown_module called.")
 
-    @allure.step(title='第一个测试')
-    @allure.severity(allure.severity_level.BLOCKER)
-    # @pytest.allure.severity(pytest.allure.severity_level.BLOCKER)
-    def test_01(self):
-        allure.attach('这是一个描述', '测试下')
-        assert 1
+        request.addfinalizer(teardown_module)
+        print('setup_module called.')
 
-    @allure.issue("http://www.baidu.com")
-    @allure.testcase("http://www.baidu.com/test_01")
-    @allure.severity(allure.severity_level.TRIVIAL)
-    def test_02(self):
-        allure.attach('这是一个描述', '测试下')
-        assert 0
+    @allure.story('功能测试用例1')  # story定义用户场景
+    @pytest.mark.website
+    def test_1(setup_function):
+        print('Test_1 called.')
+
+    @allure.story('功能测试用例2')  # story定义用户场景
+    def test_2(setup_module):
+        print('Test_2 called.')
+
+    @allure.story('功能测试用例3')  # story定义用户场景
+    def test_3(setup_module):
+        print('Test_3 called.')
+        assert 2 == 1 + 1
 
 
 if __name__ == '__main__':
-    pytest.main('-s --alluredir  report Test_001_01.py')
+    pytest.main(['-s', '-q', '--alluredir', './report/xml'])
+
