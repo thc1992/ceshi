@@ -33,6 +33,6 @@ class Test_Class(object):
     @allure.story('功能测试用例3')  # story定义用户场景
     def test_3(setup_module):
         print('Test_3 called.')
-        assert 2 == 1 + 1
+        assert 4== 1 + 1
 
 
